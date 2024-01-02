@@ -12,7 +12,7 @@ const images = document.querySelector('.images');
 const actyvityList = document.querySelector('.activity-list');
 
 // Acrivity:
-let newURLActivity = `http://www.boredapi.com/api/activity?participants=1`;
+let newURLActivity = `https://www.boredapi.com/api/activity?participants=1`;
 let participants = 1;
 let type = '';
 let data = {};
