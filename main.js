@@ -5,9 +5,9 @@ const errorCard = document.querySelector('.error-card-text');
 const activityCard = document.querySelector('.activity-card');
 const activityText = document.querySelector('.activity-text');
 const translatedText = document.querySelector('.translated-text');
-const loadingImages= document.querySelector('.js_loadingImages');
-const getImages= document.querySelector('.js_getImages');
-const addToList= document.querySelector('.js_addToList');
+const loadingImages = document.querySelector('.js_loadingImages');
+const getImages = document.querySelector('.js_getImages');
+const addToList = document.querySelector('.js_addToList');
 const images = document.querySelector('.images');
 const actyvityList = document.querySelector('.activity-list');
 
@@ -21,7 +21,7 @@ let arrImgURL = [];
 // ============================= events =============================== //
 flexBlock.addEventListener('click', (e) => {
    const target = e.target;
-   
+
    if (target.name === "participants") {
       participants = target.value;
       criateURL(participants, type, target);
@@ -35,7 +35,7 @@ flexBlock.addEventListener('click', (e) => {
    } else if (target.classList.contains('js_getActivity')) {
       images.innerHTML = '';
       activityContent.classList.remove('hidden');
-      
+
       if (actyvityList.children.length > 0) {
          showLeftSide();
       }
@@ -52,13 +52,13 @@ flexBlock.addEventListener('click', (e) => {
       showLoadingBtn(loadingImages, getImages);
 
    } else if (target.classList.contains('js_addToList')) {
-      showRightSide(); 
+      showRightSide();
       createMyList();
       createActivityByFilter();
 
    } else if (target.classList.contains('action-remove')) {
       removeActivity(target);
-      
+
    } else if (target.classList.contains('js_filterByParticipants')) {
       createObjForSearch(target);
       creatFilterItem();
@@ -98,10 +98,10 @@ search.addEventListener('input', (e) => {
 // ============================= functions =========================== //
 
 function criateURL(participants, type, target) {
-   if (type === '' || target.value==='all') { 
-      newURLActivity = `http://www.boredapi.com/api/activity?participants=${participants}`;
+   if (type === '' || target.value === 'all') {
+      newURLActivity = `https://www.boredapi.com/api/activity?participants=${participants}`;
    } else {
-      newURLActivity = `http://www.boredapi.com/api/activity?participants=${participants}&type=${type}`;
+      newURLActivity = `https://www.boredapi.com/api/activity?participants=${participants}&type=${type}`;
    }
 }
 
@@ -157,7 +157,7 @@ function showErrorMessage(text) {
    errorCard.parentElement.classList.remove('hidden');
    errorCard.textContent = text;
 
-   setTimeout(()=> errorCard.parentElement.classList.add('hidden'), 2000);
+   setTimeout(() => errorCard.parentElement.classList.add('hidden'), 2000);
 };
 
 
@@ -184,15 +184,15 @@ async function translateText(text, sourceLg, translLg) {
    try {
       const response = await fetch(translateUrl, options);
 
-      if (!response.ok) { 
+      if (!response.ok) {
          throw new Error("Помилка в запиті");
       };
 
-      const result = await response.json(); 
-      return result; 
+      const result = await response.json();
+      return result;
 
-   } catch (error) { 
-      console.error(error.message); 
+   } catch (error) {
+      console.error(error.message);
    };
 };
 
@@ -216,11 +216,11 @@ async function getImgOfActivity(text) {
          'X-RapidAPI-Host': 'image-search19.p.rapidapi.com'
       }
    };
-   
+
    try {
       const response = await fetch(urlSearchImg, optionsSearchImg);
 
-      if (!response.ok) { 
+      if (!response.ok) {
          throw new Error("Помилка в запиті");
       }
 
@@ -252,7 +252,7 @@ async function getURLphoto(text) {
 // Checking array URL:
 async function checkURL(urlArray) {
    showLoadingBtn(loadingImages, getImages); // remove
-   getImages.classList.add('hidden'); 
+   getImages.classList.add('hidden');
    images.classList.add('loading');
    const newArrURL = [];
 
@@ -269,13 +269,13 @@ async function checkURL(urlArray) {
             const PROXI = 'https://corsproxy.io/?';
             const useProxy = isLocalhost ? PROXI : ''; // якщо isLocalhost = true, то useProxy = 'https://corsproxy.io/?', ні - useProxy = "".
             const URL = useProxy + urlArray[i]; // конкатинуємо
-            console.log(URL);
+
             response = await fetch(URL);
             // ========= proxy ========= //
 
             if (response.ok) {
                newArrURL.push(urlArray[i]);
-            } 
+            }
          }
          catch (error) {
             console.error(error);
@@ -297,7 +297,7 @@ function addImgToList(arrUrl) {
       <a href=${item} target="_blank">
          <img src=${item} class="image-result aspect-video object-cover rounded-md">
       </a>`;
-      
+
       images.insertAdjacentHTML(`beforeEnd`, imgItem);
       images.classList.remove('loading');
    });
@@ -370,7 +370,7 @@ function buildActivity(arrayData) {
                ${arrayData[i].activity}
             </div>
          </li>`;
-      
+
       actyvityList.insertAdjacentHTML(`afterBegin`, activityItem);
    };
 };
@@ -431,24 +431,24 @@ function createArchive(object) {
          return
       };
 
-         let activityObj = {};
+      let activityObj = {};
 
-         activityObj.activity = object.activity;
-         activityObj.type = object.type;
-         activityObj.participants = object.participants;
-   
-         if (translatedText.textContent.length > 1) {
-            activityObj.translateBtn = true;
-            activityObj.translateText = translatedText.textContent;
-         }
-   
-         if (images.children.length > 0) {
-            activityObj.imgBtn = true;
-            activityObj.imgURL = arrImgURL;
-         }
-   
-         activityArr.push(activityObj);
-         localStorage.setItem('activity', JSON.stringify(activityArr));
+      activityObj.activity = object.activity;
+      activityObj.type = object.type;
+      activityObj.participants = object.participants;
+
+      if (translatedText.textContent.length > 1) {
+         activityObj.translateBtn = true;
+         activityObj.translateText = translatedText.textContent;
+      }
+
+      if (images.children.length > 0) {
+         activityObj.imgBtn = true;
+         activityObj.imgURL = arrImgURL;
+      }
+
+      activityArr.push(activityObj);
+      localStorage.setItem('activity', JSON.stringify(activityArr));
    };
 };
 
@@ -501,17 +501,17 @@ function createObjForSearch(target) {
 
    if (localStorage.objForSearch) {
       objForSearch = JSON.parse(localStorage['objForSearch']);
-   } 
+   }
 
    if (target.classList.contains('search__input')) {
       if (target.value.length >= 1) {
          objForSearch.search = target.value;
          target.value = '';
       }
-      
+
    } else if (target.classList.contains('js_filterByParticipants')) {
       objForSearch.participants = target.textContent.trim();
-      
+
    } else if (target.classList.contains('js_filterByType')) {
       objForSearch.type = target.textContent.trim();
    };
@@ -528,34 +528,34 @@ function creatFilterItem() {
       const objForSearch = JSON.parse(localStorage['objForSearch']);
       filters.innerHTML = '';
       // console.log(objForSearch)
-   
+
       if (objForSearch.search) {
          const filterItem = `
             <li class="filters__item" data-filter=${'search'}>
                <div class="filters__text icon icon-${'search'}">${objForSearch.search}</div>
                <button class="filters__btn icon icon-remove"></button>
             </li>`;
-         
+
          filters.insertAdjacentHTML('beforeend', filterItem);
       };
-   
+
       if (objForSearch.type) {
          const filterItem = `
             <li class="filters__item" data-filter=${'type'}>
                <div class="filters__text icon icon-${'type'}">${objForSearch.type}</div>
                <button class="filters__btn icon icon-remove"></button>
             </li>`;
-         
+
          filters.insertAdjacentHTML('beforeend', filterItem);
       };
-   
+
       if (objForSearch.participants) {
          const filterItem = `
             <li class="filters__item" data-filter=${'participants'}>
                <div class="filters__text icon icon-${'participants'}">${objForSearch.participants}</div>
                <button class="filters__btn icon icon-remove"></button>
             </li>`;
-         
+
          filters.insertAdjacentHTML('beforeend', filterItem);
       };
    };
@@ -563,33 +563,33 @@ function creatFilterItem() {
 
 
 // creating activiti list by filter:
-function createActivityByFilter() { 
+function createActivityByFilter() {
    const activityArr = JSON.parse(localStorage['activity']);
 
    if (localStorage.objForSearch) {
       const objForSearch = JSON.parse(localStorage['objForSearch']);
       let filterResult = [];
-   
+
       if (objForSearch.search) {
          filterResult = activityArr.filter(item => item.activity.trim().toLowerCase().includes(objForSearch.search.trim().toLowerCase()));
-      } 
+      }
       // console.log(filterResult)
-   
+
       if (objForSearch.participants && filterResult.length > 1) {
          filterResult = filterResult.filter(item => +item.participants === +objForSearch.participants);
-   
+
       } else if (objForSearch.participants && !objForSearch.search) {
          filterResult = activityArr.filter(item => +item.participants === +objForSearch.participants);
       }
       // console.log(filterResult)
-   
+
       if (objForSearch.type && filterResult.length > 1) {
          // filterResult = activityArr.filter(item => item.type === objForSearch.type);
          filterResult = filterResult.filter(item => item.type === objForSearch.type);
       } else if (objForSearch.type && !objForSearch.participants && !objForSearch.search) {
          filterResult = activityArr.filter(item => item.type === objForSearch.type);
-      } 
-   
+      }
+
       buildActivity(filterResult);
 
    } else {
@@ -607,10 +607,10 @@ function removeFilter(target) {
 
    if (elem.classList.contains('icon-search')) {
       delete objForSearch.search;
-      
+
    } else if (elem.classList.contains('icon-type')) {
       delete objForSearch.type;
-      
+
    } else if (elem.classList.contains('icon-participants')) {
       delete objForSearch.participants;
    };
@@ -620,7 +620,7 @@ function removeFilter(target) {
    } else {
       localStorage.setItem('objForSearch', JSON.stringify(objForSearch));
    };
-   
+
    createActivityByFilter();
    filtersItem.remove();
 };
